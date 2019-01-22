@@ -57,11 +57,16 @@ type Mediafile struct {
 	filter                string
 	skipVideo             bool
 	skipAudio             bool
+	lavfi                 string
 }
 
 /*** SETTERS ***/
 func (m *Mediafile) SetFilter(v string) {
 	m.filter = v
+}
+
+func (m *Mediafile) SetLavfi(v string) {
+	m.lavfi = v
 }
 
 func (m *Mediafile) SetAspect(v string) {
@@ -256,6 +261,10 @@ func (m *Mediafile) SetMetadata(v Metadata) {
 
 func (m *Mediafile) Filter() string {
 	return m.filter
+}
+
+func (m *Mediafile) Lavfi() string {
+	return m.lavfi
 }
 
 func (m *Mediafile) Aspect() string {
@@ -499,6 +508,7 @@ func (m *Mediafile) ToStrCommand() []string {
 		"HlsSegmentDuration",
 		"HlsPlaylistType",
 		"Filter",
+		"LavfiDevice",
 		"HttpMethod",
 		"HttpKeepAlive",
 		"OutputPath",
@@ -520,6 +530,13 @@ func (m *Mediafile) ToStrCommand() []string {
 func (m *Mediafile) ObtainFilter() []string {
 	if m.filter != "" {
 		return []string{"-vf", m.filter}
+	}
+	return nil
+}
+
+func (m *Mediafile) ObtainLavfiDevice() []string {
+	if m.lavfi != "" {
+		return []string{"-lavfi", m.lavfi}
 	}
 	return nil
 }
